@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { Carousel } from "antd";  // Import Carousel from antd
 import Image from "next/image";
-import ServiceSection from "./sectionService";
+import ServiceSection from "../components/sectionService";
 import Navbar from "../components/Navbar";
-import TmakActuality from "./sectionTmakActuality";
-import MiningNewsSection from "./sectionMiningNews";
+import TmakActuality from "../components/sectionTmakActuality";
+import MiningNewsSection from "../components/sectionMiningNews";
 
 interface Translations {
   tagline: string;

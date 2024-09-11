@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import { Button, Drawer } from 'antd';
-import CreatePage from './managers/create/page';
-import SectionDisplay from './managers/list';
-import ManagerPage from './managers/page';
+import CreatePage from './create/page';
+import SectionDisplay from './list';
+import ListSection from './list';
+import ArticleAudioGenerator from './audioGenerator';
 
 interface Article {
   id: number;
@@ -15,17 +16,19 @@ interface Article {
   images: string[];
 }
 
-const ArticleManagerPage: React.FC = () => {
+const ManagerPage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   
 
 
   return (
     <div className="w-[100%]  flex flex-col p-2">
-      < ManagerPage />
+      < CreatePage />
+      < ListSection locale='fr'/>
       {/* Display list of articles */}
+      < ArticleAudioGenerator />
     </div>
   );
 };
 
-export default ArticleManagerPage;
+export default ManagerPage;
