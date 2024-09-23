@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ClientWrapper from "../utils/ClientWrapper"; // Import the client-side wrapper
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,11 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html>
       <body className={inter.className}>
-        <ClientWrapper>
           {children}
-        </ClientWrapper>
       </body>
     </html>
   );

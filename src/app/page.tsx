@@ -20,10 +20,36 @@ interface Translations {
 }
 
 export default function Home() {
-  const [locale, setLocale] = useState<string>("en");
+  const [locale, setLocale] = useState<string>("en-US");
   const [t, setT] = useState<Translations | null>(null);
 
   useEffect(() => {
+    // Detect the user's OS language
+  const navLanguage = navigator.language.slice(0, 2);
+
+  // Check if sessionStorage has a stored language preference
+  const storedLanguage = sessionStorage.getItem("language");
+
+  if (storedLanguage) {
+    setLocale(storedLanguage); // Use the stored language
+  } else {
+    // Define a map for language codes (e.g., en => en-US)
+    const languageMap: { [key: string]: string } = {
+      en: "en-US",
+      fr: "fr-FR",
+      es: "es-ES",
+      pt: "pt-PT",
+    };
+
+    // Set the language if it's in the map, otherwise default to 'en-US'
+    const detectedLanguage = languageMap[navLanguage] || "en-US";
+    setLocale(detectedLanguage);
+
+    // Optionally, you could store the detected language in sessionStorage
+    sessionStorage.setItem("language", detectedLanguage);
+  }
+
+    console.log(navigator.language)
     async function loadTranslations() {
       const res = await fetch(`/locales/${locale}.json`);
       const translations: Translations = await res.json();
@@ -36,10 +62,10 @@ export default function Home() {
   if (!t) return <div className="">Loading...</div>;
 
   return (
-    <main className=" w-[100%] p-2 ">
-      <div className="">
-        <Navbar locale={locale} setLocale={setLocale} /> {/* Pass locale and setLocale */}
-        <div className="my-3 border-2 border-black bg-gray-200 w-[100%] p-2">
+    <main className=" w-[100%] bg-gray-200 text-black">
+      <Navbar locale={locale} setLocale={setLocale} /> {/* Pass locale and setLocale */}
+      <div className="p-2 ">
+        <div className="my-3 border-2 border-black bg-gray-100 w-[100%] p-2 rounded-lg">
           {t.tagline}
         </div>
         < ServiceSection />

@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
-
+  const [locale, setlocale] = useState<string>('en');
   const router = useRouter();
   const [error, setError] = useState('');
 
@@ -30,17 +31,27 @@ const LoginPage = () => {
       // Store tokens in sessionStorage
       sessionStorage.setItem('access_token', access);
       sessionStorage.setItem('refresh_token', refresh);
-      // Fetch the user profile data
+      // Fetch the user data
       const userResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/api/get`, {
         headers: {
           Authorization: `Bearer ${access}`,
         },
       });
-      
-      // Store profile data in sessionStorage
+      // Store user data in sessionStorage
       sessionStorage.setItem('user_data', JSON.stringify(userResponse.data));
-      
-      router.push('/'); // Redirect to home page or dashboard
+
+      // Fetch member profile data if not available in sessionStorage
+      try {
+        const userProfileResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/member/api/get`, {
+          headers: { Authorization: `Bearer ${access}` }
+        });
+        sessionStorage.setItem('profile_data', JSON.stringify(userProfileResponse.data));
+        router.push('/users/dashboards/'); // Redirect to home page or dashboard
+      } catch (userError) {
+        console.error('Error fetching profil data:', userError);
+        router.push('/users/registration/members/'); // Redirect to member registration page if profile is missing
+        
+      }
     } catch (err) {
       setError('Login failed. Please check your credentials and try again.');
     }
@@ -48,6 +59,7 @@ const LoginPage = () => {
 
   return (
     <div className='w-[100%] h-[100vh]'>
+      < Navbar locale={locale} setLocale={setlocale}/>
       <div className=' text-3xl font-bold  p-6 h-[15vh] hidden
         bg-gray-800'>
         Login page
@@ -83,7 +95,7 @@ const LoginPage = () => {
               >Vous n'avez pas de compte T-MAK ? </div>
               <div className='flex items-center justify-center text-green-600
                 font-semibold cursor-pointer'
-              ><Link rel="stylesheet" href="/users/auths/registration/"> Creez un compte ici </Link></div>
+              ><Link rel="stylesheet" href="/users/registration/"> Creez un compte ici </Link></div>
             </div>
             
           </form>

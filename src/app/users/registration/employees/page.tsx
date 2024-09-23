@@ -95,14 +95,14 @@ const EmployeeForm: React.FC = () => {
         return;
       }
 
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/employe/api/`, data, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/employee/api/`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
 
-      router.push('/users/profiles/employees'); // Redirect upon successful submission
+      router.push('/users/dashboards/professionals/'); // Redirect upon successful submission
     } catch (err) {
       console.error('Error submitting form:', err);
       setError('Failed to submit form. Please try again.');
@@ -110,43 +110,48 @@ const EmployeeForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4">
-      <SelectBusiness value={formData.business} onChange={handleBusinessChange} />
-      <TextInput type="text" name="jobDepartment" placeholder="Job Department" value={formData.jobDepartment} onChange={handleChange} />
-      <TextInput type="text" name="jobTitle" placeholder="Job Title" value={formData.jobTitle} onChange={handleChange} />
-      <TextInput type="email" name="jobEmail" placeholder="Job Email" value={formData.jobEmail} onChange={handleChange} />
-      <TextInput type="text" name="jobPhone" placeholder="Job Phone" value={formData.jobPhone} onChange={handleChange} />
-      <TextAreaInput name="jobDescription" placeholder="Job Description" value={formData.jobDescription} onChange={handleChange} />
+    <div className='p-4'>
+      <div className=" h-[80px] flex justify-center items-center bg-gray-300 mb-4
+        rounded-xl text-2xl font-bold"> Employee Registration</div>
+      <form onSubmit={handleSubmit} className="space-y-4 ">
 
-      <Upload
-        name="image"
-        listType="picture"
-        fileList={fileList}
-        onChange={handleImageUploadChange}
-        beforeUpload={() => false} // Prevent automatic upload
-        className='upload-classname'
-      >
-        <Button icon={<UploadOutlined />}>Upload Professionnal Image</Button>
-      </Upload>
+        <SelectBusiness value={formData.business} onChange={handleBusinessChange} />
+        <TextInput type="text" name="jobDepartment" placeholder="Job Department" value={formData.jobDepartment} onChange={handleChange} />
+        <TextInput type="text" name="jobTitle" placeholder="Job Title" value={formData.jobTitle} onChange={handleChange} />
+        <TextInput type="email" name="jobEmail" placeholder="Job Email" value={formData.jobEmail} onChange={handleChange} />
+        <TextInput type="text" name="jobPhone" placeholder="Job Phone" value={formData.jobPhone} onChange={handleChange} />
+        <TextAreaInput name="jobDescription" placeholder="Job Description" value={formData.jobDescription} onChange={handleChange} />
 
-      <Upload
-        name="resume"
-        listType="text"  // CVs are typically not displayed as images
-        fileList={cvFileList}
-        onChange={handleCvUploadChange}
-        beforeUpload={() => false} // Prevent automatic upload
-        className='upload-classname'
-      >
-        <Button icon={<UploadOutlined />}>Upload CV</Button>
-      </Upload>
-      
-      <button
-        type="submit"
-        className="w-full h-[45px] bg-green-500 text-white px-4 rounded-lg text-[19px] font-medium"
-      >
-        Register Employee
-      </button>
-    </form>
+        <Upload
+          name="image"
+          listType="picture"
+          fileList={fileList}
+          onChange={handleImageUploadChange}
+          beforeUpload={() => false} // Prevent automatic upload
+          className='upload-classname flex flex-col'
+        >
+          <Button icon={<UploadOutlined />} className='w-full'>Upload Professionnal Image</Button>
+        </Upload>
+
+        <Upload
+          name="resume"
+          listType="text"  // CVs are typically not displayed as images
+          fileList={cvFileList}
+          onChange={handleCvUploadChange}
+          beforeUpload={() => false} // Prevent automatic upload
+          className='upload-classname flex flex-col'
+        >
+          <Button icon={<UploadOutlined />} className='w-full'>Upload CV</Button>
+        </Upload>
+        
+        <button
+          type="submit"
+          className="w-full h-[45px] bg-green-500 text-white px-4 rounded-lg text-[19px] font-medium"
+        >
+          Register Employee
+        </button>
+      </form>
+    </div>
   );
 };
 

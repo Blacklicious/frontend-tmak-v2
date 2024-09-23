@@ -5,8 +5,8 @@ import { Select, Avatar } from 'antd';
 import axios from 'axios';
 
 interface SelectBusinessProps {
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const SelectBusiness: React.FC<SelectBusinessProps> = ({ value, onChange }) => {
